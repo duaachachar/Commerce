@@ -1,0 +1,29 @@
+.card {
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .card:hover {
+    background-color: #e0f7fa; /* Hover background color */
+    color: #004d40; /* Hover text color */
+    transform: scale(1.05); /* Optional: Adds a slight zoom effect */
+  }
+
+  @keyframes rotateAnimation {
+    0%, 10% {
+      transform: rotateY(0deg);
+    }
+    50%, 60% {
+      transform: rotateY(360deg);
+    }
+    100% {
+      transform: rotateY(0deg);
+    }
+  }
+  
+  .animated-image {
+    width: 300px; /* Adjust the size as needed */
+    height: auto;
+    animation: rotateAnimation 20s infinite;
+    transform-style: preserve-3d;
+  }
+  
