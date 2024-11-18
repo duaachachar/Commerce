@@ -18,6 +18,7 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CartList from "../cart/CartList";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -63,9 +64,13 @@ export default function HeaderSection() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [cartItems ,setCartItems] = React.useState([]);
+  const count = useSelector((state)=>state.counter)
+
+  console.log(count, 'count');
+  
 
   console.log(cartItems?.length, 'cartItemscartItems');
-  // 
+
 
 
   const [open, setOpen] = React.useState(false);
@@ -211,7 +216,7 @@ export default function HeaderSection() {
               aria-label="show 4 new mails"
               color="inherit"
             >
-              <Badge badgeContent={cartItems?.length} color="error">
+              <Badge badgeContent={count?.value} color="error">
                 <ShoppingCartIcon onClick={toggleDrawer(true)}/>
               </Badge>
             </IconButton>
