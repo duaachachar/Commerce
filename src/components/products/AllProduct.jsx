@@ -24,9 +24,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../Slices/Add-cart/addCartSlice";
-
+import { addProducts } from "../../Slices/products/productSlice";
+import { ToastContainer, toast } from "react-toastify";
 
 function AllProduct() {
   const [cartList, setCartList] = useState([]);
@@ -39,6 +40,9 @@ function AllProduct() {
   const [filterCategory, setFilterCategory] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { isToast } = useSelector((state) => state.products);
+  console.log(isToast, "isToast");
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -97,18 +101,24 @@ function AllProduct() {
     setOpenAlert(false);
   };
 
-
   useEffect(() => {
     if (cartList.length > 0) {
       localStorage.setItem("cartList", JSON.stringify(cartList));
     }
   }, [cartList]);
 
+  useEffect(()=>{
+    if(isToast){
+      toast('products already added')
+    }
+  },[isToast])
+
   return (
     <>
+      <ToastContainer />
       <Box className=" d-flex justify-content-between m-3">
         <TextField
-          onChange={()=>{}}
+          onChange={() => {}}
           size="small"
           placeholder="Search Items..."
         />
@@ -203,7 +213,12 @@ function AllProduct() {
                             <FavoriteIcon className="icon" />
                           </Tooltip>
                           <Tooltip title="Add to cart" arrow>
-                            <AddShoppingCartIcon className="icon" onClick={()=>dispatch(addToCart())}/>
+                            <AddShoppingCartIcon
+                              className="icon"
+                              onClick={() => dispatch(addProducts(item ))}
+                            />
+                            
+                            
                           </Tooltip>
                         </Box>
                       </Box>

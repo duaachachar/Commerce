@@ -1,41 +1,49 @@
-import { Typography } from "@mui/material";
+import { Button, ButtonGroup, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import { decreaseQuantity, increaseQuantity } from "../../Slices/products/productSlice";
 
 const CartList = (props) => {
   const { open, toggleDrawer } = props;
-  const [cartItems, setCartItems] = useState([]);
 
-  console.log(cartItems);
-  
-  
-  useEffect(() => {
-    const cartItemsArr = localStorage.getItem("cartList");
-    const parseCartItemsArr = JSON.parse(cartItemsArr);
+  const dispatch = useDispatch()
 
-    setCartItems(parseCartItemsArr);
-  }, []);
+  const { items } = useSelector((state) => state.products);
+  console.log(items, "items");
 
   return (
     <div>
-      <Drawer open={open} onClose={toggleDrawer (false)}>
+      <Drawer open={open} onClose={toggleDrawer(false)}>
         <Box
-          sx={{ width: 250 }}
+          sx={{ width: 450 }}
           role="presentation"
-          onClick={toggleDrawer(false)}
+         
         >
-          <Typography 
-          className="text-center mt-3 bg-danger rounded-4 text-white" variant="h6">Cart Items</Typography>
-          {cartItems?.map((item,index) => {
+          <Typography
+            className="text-center mt-3 bg-danger rounded-4 text-white"
+            variant="h6"
+          >
+            Cart Items
+          </Typography>
+          {items?.map((itemList) => {
+            console.log(items, "items");
+
             return (
-              
-              <Box key={index}>
-                <img width={"100px"} className="mt-3" src={item.img} alt="logo" />
-                <span>{item.name}</span>
-                <span>{item.Price}</span>
+              <Box className="d-flex justify-content-around align-items-center my-3 border py-2 border-danger " style={{minHeight:'80px', maxHeight:'80px'}}>
+                <img width={"40px"} src={itemList?.image} alt="card image" />
+
+                <span>{itemList?.category}</span>
+                <ButtonGroup size="small" variant="text" aria-label="Basic button group">
+                  <Button><RemoveIcon onClick ={()=>dispatch(decreaseQuantity(itemList))}/></Button>
+                  <Button>{itemList?.quantity}</Button>
+                  <Button><AddIcon onClick ={()=>dispatch(increaseQuantity(itemList))} /></Button>
+                </ButtonGroup>
+                <span>{itemList?.price}</span>
               </Box>
-          
             );
           })}
         </Box>
@@ -43,6 +51,5 @@ const CartList = (props) => {
     </div>
   );
 };
-
 
 export default CartList;
